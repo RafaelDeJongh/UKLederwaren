@@ -4,7 +4,7 @@ html,body,#page{
 	height:100%;
 	position:relative
 }
-#content{
+body:not(.home) #content{
 	min-height:81%;
 	overflow-x:hidden
 }

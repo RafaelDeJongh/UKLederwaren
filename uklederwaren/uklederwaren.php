@@ -277,6 +277,5 @@ function reduce_woocommerce_min_strength_requirement($strength){return 1;}
 add_filter('woocommerce_product_subcategories_hide_empty','show_empty_categories',10,1);
 function show_empty_categories ($show_empty){
 	$show_empty = true;
-	if($show_empty){}
 	return $show_empty;
 }
