@@ -279,3 +279,6 @@ function show_empty_categories ($show_empty){
 	$show_empty = true;
 	return $show_empty;
 }
+//Temprarly disable Cabin Max
+function disableEmptyCat(){if(is_shop()) echo'<script>jQuery(".product-category.product.last a").css({cursor:"default"}).removeAttr("href");jQuery(".product-category.product.last h3").prepend("Coming Soon<br>");</script>';}
+add_action('wp_footer','disableEmptyCat',100);
