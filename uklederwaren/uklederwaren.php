@@ -7,7 +7,7 @@ Author: Rafael De Jongh
 Version: 1.0
 Author URI: https://www.rafaeldejongh.com
 */
-//WooCommerce Functions
+//Hide price for non logged-in users
 add_action('init','hide_price');
 function hide_price(){
 	if(!is_user_logged_in()){
@@ -21,8 +21,8 @@ function hide_price(){
 }
 function print_login_to_see(){echo '<a href="' . get_permalink(woocommerce_get_page_id('myaccount')) . '">' . __('Login to see prices','theme_name') . '</a>';}
 //Change number or products per row to 3
-add_filter('loop_shop_columns','loop_columns');
-if(!function_exists('loop_columns')){function loop_columns(){return 3;}}
+add_filter('loop_shop_columns','loop_columns',999);
+function loop_columns(){return 4;}
 //Display 9 products per page.
 add_filter('loop_shop_per_page',create_function('$cols','return 9;'),20);
 //Change Variable Product Text
@@ -263,13 +263,20 @@ function user_autologout(){
 	}
 }
 add_action('woocommerce_registration_redirect','user_autologout',2);
-/*Display Custom Fields on User Profile*/
+//Display Custom Fields on User Profile
 add_filter('woocommerce_customer_meta_fields','add_custom_meta_field');
 function add_custom_meta_field($fields){
 	$fieldData = array('label' => 'VAT Number');
 	$fields['billing']['fields']['billing_vat'] = $fieldData;
 	return $fields;
 }
-/*Reduce the strength requirement on the woocommerce password*/
+//Reduce the strength requirement on the woocommerce password
 add_filter('woocommerce_min_password_strength','reduce_woocommerce_min_strength_requirement');
 function reduce_woocommerce_min_strength_requirement($strength){return 1;}
+//Show Empty Categories
+add_filter('woocommerce_product_subcategories_hide_empty','show_empty_categories',10,1);
+function show_empty_categories ($show_empty){
+	$show_empty = true;
+	if($show_empty){}
+	return $show_empty;
+}
