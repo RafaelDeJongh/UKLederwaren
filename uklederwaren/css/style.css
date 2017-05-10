@@ -34,7 +34,7 @@ input,textarea{outline:0}
 .entry-title{display:none}
 /*Slider
 ----------------------------*/
-img.slide-item {
+img.slide-item{
 	height:550px;
 	width:100%;
 	object-fit:cover
@@ -105,10 +105,10 @@ ul.sow-slider-images{padding:0}
 	padding:8px;
 	font-style:normal
 }
-.woocommerce ul.products li.product h3 {line-height:1.5}
+.woocommerce ul.products li.product h3{line-height:1.5}
 #woosvi_strap ul.svithumbnails li:only-child,div#woosvithumbs .swiper-wrapper .swiper-slide:only-child{display:none}
 .swiper-button-main{transition:opacity .3s ease}
-.swiper-button-disabled {opacity:0!important}
+.swiper-button-disabled{opacity:0!important}
 .swiper-button-black{opacity:.8}
 .woocommerce .cart-collaterals .cart_totals, .woocommerce-page .cart-collaterals .cart_totals{
 	float:none;
@@ -139,13 +139,14 @@ ul.sow-slider-images{padding:0}
 		border-radius:0;
 		float:left
 	}
-	.slicknav_nav li:nth-last-child(2) {padding:0}
+	.slicknav_nav li:nth-last-child(2){padding:0}
 	li.nav-cart{margin-top:41px}
 }
 /*4 Rows*/
+@media screen and (min-width:768px) and (max-width:991px){a.button.add_to_cart_button{left:-8px}}
 @media only screen and (min-width:400px) and (max-width:991px){
-	.woocommerce-page:not(.single) ul.products li.product, .woocommerce:not(.single) ul.products li.product {
-		width:46%!important;
+	.woocommerce-page:not(.single) ul.products li.product, .woocommerce:not(.single) ul.products li.product{
+		width:46%!important
 	}
 }
 @media screen and (min-width:768px){
@@ -160,7 +161,7 @@ ul.sow-slider-images{padding:0}
 	}
 	#woosvi_strap{min-height:420px}
 	/*4 Rows*/
-	.woocommerce-page:not(.single) ul.products li.product, .woocommerce:not(.single) ul.products li.product {
+	.woocommerce-page:not(.single) ul.products li.product, .woocommerce:not(.single) ul.products li.product{
 		width:22%!important;
 	}
 }
