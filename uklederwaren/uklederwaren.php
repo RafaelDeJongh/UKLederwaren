@@ -23,7 +23,7 @@ function print_login_to_see(){echo '<a href="' . get_permalink(woocommerce_get_p
 //Change number or products per row to 3
 add_filter('loop_shop_columns','loop_columns',999);
 function loop_columns(){return 4;}
-//Display 9 products per page.
+//Display 12 products per page.
 add_filter('loop_shop_per_page',create_function('$cols','return 12;'),20);
 //Change Variable Product Text
 add_filter('woocommerce_product_add_to_cart_text','custom_woocommerce_product_add_to_cart_text');

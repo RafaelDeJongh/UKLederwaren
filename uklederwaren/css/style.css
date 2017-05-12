@@ -107,7 +107,7 @@ ul.sow-slider-images{padding:0}
 	padding:8px;
 	font-style:normal
 }
-.woocommerce ul.products li.product h3 {line-height:1.5}
+.woocommerce ul.products li.product h3 {line-height:1.5;word-wrap:normal}
 #woosvi_strap ul.svithumbnails li:only-child,div#woosvithumbs .swiper-wrapper .swiper-slide:only-child{display:none}
 .swiper-button-main{transition:opacity .3s ease}
 .swiper-button-disabled {opacity:0!important}
