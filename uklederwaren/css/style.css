@@ -35,9 +35,9 @@ input,textarea{outline:0}
 /*Slider
 ----------------------------*/
 img.slide-item {
-	height:550px;
+	height:auto;
 	width:100%;
-	object-fit:cover
+	object-fit:contain
 }
 /*Remove Padding+Stroke Hentry First
 ----------------------------*/
@@ -46,7 +46,7 @@ img.slide-item {
 	border-top:none
 }
 .header-promo{
-	border-bottom:none;
+	border-bottom:none
 }
 .hentry{
 	margin:auto;
@@ -75,6 +75,12 @@ img.slide-item {
 }
 ul.sow-slider-images{padding:0}
 .so-widget-sow-hero{margin-top:-1.5em}
+/*Forms
+----------------------------*/
+select,textarea,input[type="text"],input[type="password"],input[type="submit"],input[type="datetime"],input[type="datetime-local"],input[type="date"],input[type="month"],input[type="time"],input[type="week"],input[type="number"],input[type="email"],input[type="url"],input[type="search"],input[type="tel"],input[type="color"]{
+	outline:none;
+	max-width:100%
+}
 /*WooCommerce Edits
 ----------------------------*/
 .post-type-archive-product.woocommerce .content-area{
