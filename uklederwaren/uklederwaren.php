@@ -1,26 +1,38 @@
 <?php
 /*
-Plugin Name: UK Lederwaren Customization
-Plugin URI: https://www.rafaeldejongh.com
-Description: A plugin that adds various new functionalities to WordPress and WooCommerce created for UKLederwaren
-Author: Rafael De Jongh
-Version: 1.0
-Author URI: https://www.rafaeldejongh.com
+Plugin Name:UK Lederwaren Customization
+Plugin URI:https://www.rafaeldejongh.com
+Description:A plugin that adds various new functionalities to WordPress and WooCommerce created for UKLederwaren
+Author:Rafael De Jongh
+Version:1.0
+Author URI:https://www.rafaeldejongh.com
 */
 //Hide price for non logged-in users
-add_action('init','hide_price');
-function hide_price(){
+add_action('init','hide_product_archives_prices');
+function hide_product_archives_prices(){
 	if(!is_user_logged_in()){
-	 remove_action('woocommerce_after_shop_loop_item','woocommerce_template_loop_add_to_cart',10);
-	 remove_action('woocommerce_single_product_summary','woocommerce_template_single_add_to_cart',30);
-	 remove_action('woocommerce_single_product_summary','woocommerce_template_single_price',10);
-	 remove_action('woocommerce_after_shop_loop_item_title','woocommerce_template_loop_price',10);
-	 add_action('woocommerce_single_product_summary','print_login_to_see',31);
-	 add_action('woocommerce_after_shop_loop_item','print_login_to_see',11);
+	remove_action('woocommerce_after_shop_loop_item','woocommerce_template_loop_add_to_cart',10);
+	remove_action('woocommerce_after_shop_loop_item_title','woocommerce_template_loop_price',10) ;
+	add_action ('woocommerce_after_shop_loop_item','print_login_to_see',10);
 	}
 }
-function print_login_to_see(){echo '<a href="' . get_permalink(woocommerce_get_page_id('myaccount')) . '">' . __('Login to see prices','theme_name') . '</a>';}
-//Change number or products per row to 3
+add_action('woocommerce_single_product_summary','hide_single_product_prices',1);
+function hide_single_product_prices(){
+	if(!is_user_logged_in()){
+	global $product;
+	remove_action('woocommerce_single_product_summary','woocommerce_template_single_price',10);
+	if(! $product->is_type('variable')){
+		remove_action('woocommerce_single_product_summary','woocommerce_template_single_add_to_cart',30);
+		add_action('woocommerce_single_product_summary','print_login_to_see',30);
+	}else{
+		remove_action('woocommerce_single_variation','woocommerce_single_variation',10);
+		remove_action('woocommerce_single_variation','woocommerce_single_variation_add_to_cart_button',20);
+		add_action('woocommerce_single_variation','print_login_to_see',10);
+	}}
+}
+//Display my account link 
+function print_login_to_see(){echo '<a href="' . get_permalink(wc_get_page_id('myaccount')) . '" class="button">' . __('Login to see the price','theme_name') . '</a>';}
+//Change number or products per row to 4
 add_filter('loop_shop_columns','loop_columns',999);
 function loop_columns(){return 4;}
 //Display 12 products per page.
@@ -31,15 +43,15 @@ function custom_woocommerce_product_add_to_cart_text(){
 	global $product;
 	$product_type = $product->product_type;
 	switch ($product_type){
-		case 'external': return __('Buy product','woocommerce');
+		case 'external':return __('Buy product','woocommerce');
 		break;
-		case 'grouped': return __('View products','woocommerce');
+		case 'grouped':return __('View products','woocommerce');
 		break;
-		case 'simple': return __('Add to cart','woocommerce');
+		case 'simple':return __('Add to cart','woocommerce');
 		break;
-		case 'variable': return __('Select color','woocommerce');
+		case 'variable':return __('Select color','woocommerce');
 		break;
-		default: return __('Read more','woocommerce');
+		default:return __('Read more','woocommerce');
 	}
 }
 //Hide shipping rates when free shipping is available
@@ -121,13 +133,13 @@ function my_extra_register_fields(){
 <?php
 	wp_enqueue_script('wc-country-select');
 	woocommerce_form_field('billing_country',array(
-		'type'        => 'country',
-		'class'       => array('chzn-drop'),
-		'label'       => __('Country'),
+		'type'		=> 'country',
+		'class'	   => array('chzn-drop'),
+		'label'	   => __('Country'),
 		'placeholder' => __('Choose your country.'),
-		'required'    => true,
-		'clear'       => true,
-		'default'     => 'BE'
+		'required'	=> true,
+		'clear'	   => true,
+		'default'	 => 'BE'
 	));
 ?>
 	<p class="woocommerce-FormRow form-row form-row-first">
@@ -237,7 +249,7 @@ add_filter('woocommerce_formatted_address_replacements','custom_formatted_addres
 function custom_formatted_address_replacements($address,$args){
 	$address['{vat}'] = '';
 	if(! empty($args['vat'])){
-		$address['{vat}'] = __('VAT Number','woocommerce') . ': ' . $args['vat'];
+		$address['{vat}'] = __('VAT Number','woocommerce') . ':' . $args['vat'];
 	}
 	return $address;
 }
@@ -280,5 +292,5 @@ function show_empty_categories ($show_empty){
 	return $show_empty;
 }
 //Temprarly disable Cabin Max
-function disableEmptyCat(){if(is_shop()) echo'<script>jQuery(".product-category.product.last a").css({cursor:"default"}).removeAttr("href");jQuery(".product-category.product.last h3").prepend("Coming Soon<br>");</script>';}
+function disableEmptyCat(){if(is_front_page()) echo'<script>jQuery(".product-category.product.last a").css({cursor:"default"}).removeAttr("href");jQuery(".product-category.product.last h3").prepend("Coming Soon<br>");</script>';}
 add_action('wp_footer','disableEmptyCat',100);
