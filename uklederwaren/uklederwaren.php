@@ -12,9 +12,8 @@ add_action('init','hide_product_archives_prices');
 function hide_product_archives_prices(){
 	if(is_user_logged_in()) return;
 	remove_action('woocommerce_after_shop_loop_item','woocommerce_template_loop_add_to_cart',10);
-	remove_action('woocommerce_after_shop_loop_item_title','woocommerce_template_loop_price',10) ;
+	remove_action('woocommerce_after_shop_loop_item_title','woocommerce_template_loop_price',10);
 	add_action ('woocommerce_after_shop_loop_item','print_login_to_see',10);
-
 }
 add_action('woocommerce_single_product_summary','hide_single_product_prices',1);
 function hide_single_product_prices(){
@@ -109,8 +108,7 @@ return $fields;
 /* ---------------------- Registration page ----------------------- */
 //Add extra fields in registration form
 add_action('woocommerce_register_form_start','my_extra_register_fields');
-function my_extra_register_fields(){
-?>
+function my_extra_register_fields(){?>
 	<p class="woocommerce-FormRow form-row form-row-first">
 		<label for="reg_billing_first_name"><?php _e('First Name','woocommerce'); ?><span class="required">*</span></label>
 		<input type="text" class="input-text" name="billing_first_name" id="reg_billing_first_name" value="<?php if(! empty($_POST['billing_first_name'])) esc_attr_e($_POST['billing_first_name']); ?>"/>
@@ -133,13 +131,13 @@ function my_extra_register_fields(){
 <?php
 	wp_enqueue_script('wc-country-select');
 	woocommerce_form_field('billing_country',array(
-		'type'		=> 'country',
-		'class'	   => array('chzn-drop'),
-		'label'	   => __('Country'),
-		'placeholder' => __('Choose your country.'),
-		'required'	=> true,
-		'clear'	   => true,
-		'default'	 => 'BE'
+		'type'			=> 'country',
+		'class'			=> array('chzn-drop'),
+		'label'			=> __('Country'),
+		'placeholder'	=> __('Choose your country.'),
+		'required'		=> true,
+		'clear'			=> true,
+		'default'		=> 'BE'
 	));
 ?>
 	<p class="woocommerce-FormRow form-row form-row-first">
@@ -184,41 +182,17 @@ function my_validate_extra_register_fields($username,$email,$validation_errors){
 //Below code save extra fields when new user register
 add_action('woocommerce_created_customer','my_save_extra_register_fields'); 
 function my_save_extra_register_fields($customer_id){
-	if(isset($_POST['billing_first_name'])){
-		update_user_meta($customer_id,'first_name',sanitize_text_field($_POST['billing_first_name']));
-		update_user_meta($customer_id,'billing_first_name',sanitize_text_field($_POST['billing_first_name']));
-	}
-	if(isset($_POST['billing_last_name'])){
-		update_user_meta($customer_id,'last_name',sanitize_text_field($_POST['billing_last_name']));
-		update_user_meta($customer_id,'billing_last_name',sanitize_text_field($_POST['billing_last_name']));
-	}
-	if(isset($_POST['billing_company'])){
-		update_user_meta($customer_id,'billing_company',sanitize_text_field($_POST['billing_company']));
-	}
-	if(isset($_POST['billing_vat'])){
-		update_user_meta($customer_id,'billing_vat',sanitize_text_field($_POST['billing_vat']));
-	}
-	if(isset($_POST['billing_country'])){
-		update_user_meta($customer_id,'billing_country',sanitize_text_field($_POST['billing_country']));
-	}
-	if(isset($_POST['billing_city'])){
-		update_user_meta($customer_id,'billing_city',sanitize_text_field($_POST['billing_city']));
-	}
-	if(isset($_POST['billing_postcode'])){
-		update_user_meta($customer_id,'billing_postcode',sanitize_text_field($_POST['billing_postcode']));
-	}
-	if(isset($_POST['billing_state'])){
-		update_user_meta($customer_id,'billing_state',sanitize_text_field($_POST['billing_state']));
-	}
-	if(isset($_POST['billing_address_1'])){
-		update_user_meta($customer_id,'billing_address_1',sanitize_text_field($_POST['billing_address_1']));
-	}
-	if(isset($_POST['billing_phone'])){
-		update_user_meta($customer_id,'billing_phone',sanitize_text_field($_POST['billing_phone']));
-	}
-	if(isset($_POST['email'])){
-		update_user_meta($customer_id,'billing_email',sanitize_text_field($_POST['email']));
-	}
+	if(isset($_POST['billing_first_name'])){update_user_meta($customer_id,'first_name',sanitize_text_field($_POST['billing_first_name']));update_user_meta($customer_id,'billing_first_name',sanitize_text_field($_POST['billing_first_name']));}
+	if(isset($_POST['billing_last_name'])){update_user_meta($customer_id,'last_name',sanitize_text_field($_POST['billing_last_name']));update_user_meta($customer_id,'billing_last_name',sanitize_text_field($_POST['billing_last_name']));}
+	if(isset($_POST['billing_company'])){update_user_meta($customer_id,'billing_company',sanitize_text_field($_POST['billing_company']));}
+	if(isset($_POST['billing_vat'])){update_user_meta($customer_id,'billing_vat',sanitize_text_field($_POST['billing_vat']));}
+	if(isset($_POST['billing_country'])){update_user_meta($customer_id,'billing_country',sanitize_text_field($_POST['billing_country']));}
+	if(isset($_POST['billing_city'])){update_user_meta($customer_id,'billing_city',sanitize_text_field($_POST['billing_city']));}
+	if(isset($_POST['billing_postcode'])){update_user_meta($customer_id,'billing_postcode',sanitize_text_field($_POST['billing_postcode']));}
+	if(isset($_POST['billing_state'])){update_user_meta($customer_id,'billing_state',sanitize_text_field($_POST['billing_state']));}
+	if(isset($_POST['billing_address_1'])){update_user_meta($customer_id,'billing_address_1',sanitize_text_field($_POST['billing_address_1']));}
+	if(isset($_POST['billing_phone'])){update_user_meta($customer_id,'billing_phone',sanitize_text_field($_POST['billing_phone']));}
+	if(isset($_POST['email'])){update_user_meta($customer_id,'billing_email',sanitize_text_field($_POST['email']));}
 }
 /* ---------------------- Account page ----------------------- */
 //Add field under my account billing
