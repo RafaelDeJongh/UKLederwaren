@@ -10,15 +10,15 @@ Author URI:https://www.rafaeldejongh.com
 //Hide price for non logged-in users
 add_action('init','hide_product_archives_prices');
 function hide_product_archives_prices(){
-	if(!is_user_logged_in()){
+	if(is_user_logged_in()) return;
 	remove_action('woocommerce_after_shop_loop_item','woocommerce_template_loop_add_to_cart',10);
 	remove_action('woocommerce_after_shop_loop_item_title','woocommerce_template_loop_price',10) ;
 	add_action ('woocommerce_after_shop_loop_item','print_login_to_see',10);
-	}
+
 }
 add_action('woocommerce_single_product_summary','hide_single_product_prices',1);
 function hide_single_product_prices(){
-	if(!is_user_logged_in()){
+	if(is_user_logged_in()) return;
 	global $product;
 	remove_action('woocommerce_single_product_summary','woocommerce_template_single_price',10);
 	if(! $product->is_type('variable')){
@@ -27,10 +27,10 @@ function hide_single_product_prices(){
 	}else{
 		remove_action('woocommerce_single_variation','woocommerce_single_variation',10);
 		remove_action('woocommerce_single_variation','woocommerce_single_variation_add_to_cart_button',20);
-		add_action('woocommerce_single_variation','print_login_to_see',10);
-	}}
+		add_action('woocommerce_single_variation','print_login_to_see',20);
+	}
 }
-//Display my account link 
+//Display my account link
 function print_login_to_see(){echo '<a href="' . get_permalink(wc_get_page_id('myaccount')) . '" class="button">' . __('Login to see the price','theme_name') . '</a>';}
 //Change number or products per row to 4
 add_filter('loop_shop_columns','loop_columns',999);
