@@ -249,6 +249,16 @@ function user_autologout(){
 	}
 }
 add_action('woocommerce_registration_redirect','user_autologout',2);
+function registration_message(){
+		$not_approved_message = '<ul class="woocommerce-info"><li>Your account will be held for moderation and you will be unable to login until it is approved.</li></ul>';
+		if(isset($_REQUEST['approved'])){
+				$approved = $_REQUEST['approved'];
+				if ($approved == 'false')  echo '<ul class="woocommerce-message"><li>Registration successful! You will be notified upon approval of your account.</li></ul>';
+				else echo $not_approved_message;
+		}
+		else echo $not_approved_message;
+}
+add_action('woocommerce_before_customer_login_form', 'registration_message', 2);
 //Display Custom Fields on User Profile
 add_filter('woocommerce_customer_meta_fields','add_custom_meta_field');
 function add_custom_meta_field($fields){
