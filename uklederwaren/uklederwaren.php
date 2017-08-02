@@ -179,7 +179,7 @@ function my_validate_extra_register_fields($username,$email,$validation_errors){
 	if(isset($_POST['billing_phone']) && empty($_POST['billing_phone'])){$validation_errors->add('billing_phone_error',__('A phone number is required!','woocommerce'));}
 	return $validation_errors;
 }
-//Below code save extra fields when new user register
+//Save extra fields when new user registers
 add_action('woocommerce_created_customer','my_save_extra_register_fields'); 
 function my_save_extra_register_fields($customer_id){
 	if(isset($_POST['billing_first_name'])){update_user_meta($customer_id,'first_name',sanitize_text_field($_POST['billing_first_name']));update_user_meta($customer_id,'billing_first_name',sanitize_text_field($_POST['billing_first_name']));}
@@ -218,7 +218,7 @@ function custom_my_account_my_address_formatted_address($fields,$customer_id,$na
 	$fields['vat'] = get_user_meta($customer_id,$name . '_vat',true);
 	return $fields;
 }
-//Replace the key for custom field to show on my account billing
+//Replaces the key for custom field to show on my account billing
 add_filter('woocommerce_formatted_address_replacements','custom_formatted_address_replacements',10,2);
 function custom_formatted_address_replacements($address,$args){
 	$address['{vat}'] = '';
@@ -262,7 +262,12 @@ add_action('woocommerce_before_customer_login_form', 'registration_message', 2);
 //Display Custom Fields on User Profile
 add_filter('woocommerce_customer_meta_fields','add_custom_meta_field');
 function add_custom_meta_field($fields){
-	$fieldData = array('label' => 'VAT Number');
+	global $user_id;
+	$get_vat = get_user_meta($user_id,'billing_vat',true);
+	$lidstaat = substr($get_vat,0,2);
+	$number = substr($get_vat,2,15);
+	
+	$fieldData = array('label' => 'VAT Number','description' => '<a href="http://ec.europa.eu/taxation_customs/vies/viesquer.do?ms='.$lidstaat.'&iso='.$number.'&vat='.$number.'&name=&companyType=&street1=&postcode=&city=&requesterMs=BE&requesterIso=BE&requesterVat=0899251861&BtnSubmitVat=Verify" target="_blank">Validate VAT Number</a>');
 	$fields['billing']['fields']['billing_vat'] = $fieldData;
 	return $fields;
 }
