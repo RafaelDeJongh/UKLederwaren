@@ -180,7 +180,7 @@ function my_validate_extra_register_fields($username,$email,$validation_errors){
 	return $validation_errors;
 }
 //Save extra fields when new user registers
-add_action('woocommerce_created_customer','my_save_extra_register_fields'); 
+add_action('woocommerce_created_customer','my_save_extra_register_fields');
 function my_save_extra_register_fields($customer_id){
 	if(isset($_POST['billing_first_name'])){update_user_meta($customer_id,'first_name',sanitize_text_field($_POST['billing_first_name']));update_user_meta($customer_id,'billing_first_name',sanitize_text_field($_POST['billing_first_name']));}
 	if(isset($_POST['billing_last_name'])){update_user_meta($customer_id,'last_name',sanitize_text_field($_POST['billing_last_name']));update_user_meta($customer_id,'billing_last_name',sanitize_text_field($_POST['billing_last_name']));}
@@ -194,12 +194,24 @@ function my_save_extra_register_fields($customer_id){
 	if(isset($_POST['billing_phone'])){update_user_meta($customer_id,'billing_phone',sanitize_text_field($_POST['billing_phone']));}
 	if(isset($_POST['email'])){update_user_meta($customer_id,'billing_email',sanitize_text_field($_POST['email']));}
 }
+//Generate Username based on first and last name.
+add_filter('woocommerce_new_customer_data','custom_new_customer_data',10,1);
+function custom_new_customer_data( $new_customer_data ){
+	if(isset($_POST['billing_first_name'])) $first_name = $_POST['billing_first_name'];
+	if(isset($_POST['billing_last_name'])) $last_name = $_POST['billing_last_name'];
+	if(!empty($first_name) || !empty($last_name)){
+		$complete_name = $first_name . ' ' . $last_name;
+		// Replacing 'user_login' in the user data array, before data is inserted
+		$new_customer_data['user_login'] = sanitize_user(str_replace(' ','-', $complete_name));
+	}
+	return $new_customer_data;
+}
 /* ---------------------- Account page ----------------------- */
 //Add field under my account billing
 add_filter('woocommerce_billing_fields','woocommerce_billing_fields');
 function woocommerce_billing_fields($fields){
 	$user_id = get_current_user_id();
-	$user	= get_userdata($user_id);
+	$user    = get_userdata($user_id);
 	if(!$user) return;
 	$fields['billing_vat'] = array(
 		'type'			=> 'text',
@@ -264,10 +276,9 @@ add_filter('woocommerce_customer_meta_fields','add_custom_meta_field');
 function add_custom_meta_field($fields){
 	global $user_id;
 	$get_vat = get_user_meta($user_id,'billing_vat',true);
-	$lidstaat = substr($get_vat,0,2);
+	$lidstaat = strtoupper(substr($get_vat,0,2));
 	$number = substr($get_vat,2,15);
-	
-	$fieldData = array('label' => 'VAT Number','description' => '<a href="http://ec.europa.eu/taxation_customs/vies/viesquer.do?ms='.$lidstaat.'&iso='.$number.'&vat='.$number.'&name=&companyType=&street1=&postcode=&city=&requesterMs=BE&requesterIso=BE&requesterVat=0899251861&BtnSubmitVat=Verify" target="_blank">Validate VAT Number</a>');
+	$fieldData = array('label' => 'VAT Number','description' => '<a href="http://ec.europa.eu/taxation_customs/vies/viesquer.do?ms='.$lidstaat.'&iso='.$lidstaat.'&vat='.$number.'&name=&companyType=&street1=&postcode=&city=&requesterMs=BE&requesterIso=BE&requesterVat=0899251861&BtnSubmitVat=Verify" target="_blank">Validate VAT Number</a>');
 	$fields['billing']['fields']['billing_vat'] = $fieldData;
 	return $fields;
 }
